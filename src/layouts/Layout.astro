@@ -1,0 +1,77 @@
+---
+import "../styles/global.css";
+import Nav from "../components/Nav.astro";
+import Drawer from "../components/Drawer.astro";
+import { profile } from "../data/site";
+
+interface Props {
+    title?: string;
+    description?: string;
+}
+
+const {
+    title = `${profile.name} - ${profile.role}`,
+    description = "Backend systems, data pipelines and cloud-native platforms in Python, FastAPI, Airflow and AWS.",
+} = Astro.props;
+
+const ogImage = new URL("/og-image.png", Astro.site ?? Astro.url).href;
+const navLinks = [
+    { href: "#about", label: "About" },
+    { href: "#work", label: "Work" },
+    { href: "#talks", label: "Talks" },
+    { href: "#gallery", label: "Gallery" },
+    { href: "#experience", label: "Experience" },
+    { href: "#awards", label: "Awards" },
+    { href: "#testimonials", label: "Testimonials" },
+    { href: "#skills", label: "Skills" },
+];
+---
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="author" content={profile.name}/>
+    <meta name="description" content={`${profile.name} - ${profile.role}. ${description}`}/>
+    <meta property="og:title" content={title}/>
+    <meta property="og:description" content={description}/>
+    <meta property="og:image" content={ogImage}/>
+    <meta property="og:url" content={Astro.site?.href ?? Astro.url.href}/>
+    <meta name="theme-color" content="#0B0D12"/>
+    <title>{title}</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+    <script is:inline>document.documentElement.classList.add("js");</script>
+</head>
+
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="ambient" aria-hidden="true">
+    <span class="orb orb--a"></span>
+    <span class="orb orb--b"></span>
+    <span class="orb orb--c"></span>
+    <span class="grid-lines"></span>
+</div>
+<div class="scroll-progress" aria-hidden="true"></div>
+
+<Nav links={navLinks}/>
+
+<main id="main">
+    <slot/>
+</main>
+
+<Drawer id="menu" label="Menu" variant="menu">
+    <nav class="drawer__nav" aria-label="Mobile">
+        {navLinks.map((link) => <a href={link.href} data-close>{link.label}</a>)}
+        <a href="#contact" data-close>Contact</a>
+    </nav>
+</Drawer>
+
+<slot name="drawers"/>
+
+<script>
+    import "../scripts/site.js";
+</script>
+</body>
+</html>

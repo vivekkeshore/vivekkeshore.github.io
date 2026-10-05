@@ -1,0 +1,27 @@
+---
+import SectionHead from "./SectionHead.astro";
+import { marqueeRows, skillGroups } from "../data/site";
+---
+
+<section class="section" id="skills">
+    <div class="container">
+        <SectionHead eyebrow="Skills" title="Python at the core. Cloud at scale. AI where it matters."/>
+    </div>
+    {marqueeRows.map((row, i) => (
+        <div class:list={["marquee reveal", { "marquee--reverse": i % 2 === 1 }]} aria-hidden="true">
+            <div class="marquee__track">
+                {row.map((skill) => <span>{skill}</span>)}
+            </div>
+        </div>
+    ))}
+    <div class="container">
+        <div class="skills">
+            {skillGroups.map((group, i) => (
+                <div class="skill-group glass glass--interactive reveal" style={`--i:${i}`}>
+                    <h3>{group.title}</h3>
+                    <p>{group.items}</p>
+                </div>
+            ))}
+        </div>
+    </div>
+</section>
