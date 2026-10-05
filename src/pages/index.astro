@@ -1,0 +1,36 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Hero from "../components/Hero.astro";
+import About from "../components/About.astro";
+import Work from "../components/Work.astro";
+import MoreWork from "../components/MoreWork.astro";
+import Talks from "../components/Talks.astro";
+import Gallery from "../components/Gallery.astro";
+import Experience from "../components/Experience.astro";
+import Awards from "../components/Awards.astro";
+import Testimonials from "../components/Testimonials.astro";
+import Skills from "../components/Skills.astro";
+import Community from "../components/Community.astro";
+import Contact from "../components/Contact.astro";
+import ProjectDrawer from "../components/ProjectDrawer.astro";
+import { projects } from "../data/site";
+---
+
+<Layout>
+    <Hero/>
+    <About/>
+    <Work/>
+    <MoreWork/>
+    <Talks/>
+    <Gallery/>
+    <Experience/>
+    <Awards/>
+    <Testimonials/>
+    <Skills/>
+    <Community/>
+    <Contact/>
+
+    <Fragment slot="drawers">
+        {projects.map((project) => <ProjectDrawer project={project}/>)}
+    </Fragment>
+</Layout>

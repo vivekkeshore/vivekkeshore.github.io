@@ -1,0 +1,79 @@
+---
+import { Image } from "astro:assets";
+import SectionHead from "./SectionHead.astro";
+import TopazDiagram from "./TopazDiagram.astro";
+import { projects } from "../data/site";
+
+const featured = projects.filter((project) => project.featured);
+---
+
+<section class="section" id="work">
+    <div class="container">
+        <SectionHead eyebrow="Selected work" title="Platforms that move real data, every day."/>
+
+        <div class="stack">
+            {featured.map((project, i) => (
+                <article class="stack-card" style={`--i:${i}`}>
+                    <div class="stack-card__inner glass glass--interactive">
+                        <div class="stack-card__copy">
+                            <p class="eyebrow">{project.eyebrow}</p>
+                            <h3 set:html={project.titleHtml ?? project.title}/>
+                            <p>{project.summary}</p>
+                            {project.metrics && (
+                                <dl class="metrics">
+                                    {project.metrics.map((metric) => (
+                                        <div><dt>{metric.label}</dt><dd>{metric.value}</dd></div>
+                                    ))}
+                                </dl>
+                            )}
+                            {project.tags && <ul class="tags">{project.tags.map((tag) => <li>{tag}</li>)}</ul>}
+                            <button class="btn btn--glass btn--badge btn--case" type="button" data-drawer={`p-${project.id}`}>
+                                <span class="btn__badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5zM4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5M8 8h8M8 12h5"/></svg></span>
+                                Read Case Study
+                                <span class="btn__arrow" aria-hidden="true">→</span>
+                            </button>
+                        </div>
+
+                        {project.diagram === "topaz-delta" && project.cardImage ? (
+                            <div class="media-switch" data-media-switch>
+                                <div class="chip-filters chip-filters--sm" role="group" aria-label="Choose a view">
+                                    <span class="chip-filters__indicator" aria-hidden="true"></span>
+                                    <button type="button" data-filter="0" aria-pressed="true">Architecture</button>
+                                    <button type="button" data-filter="1" aria-pressed="false">Product</button>
+                                </div>
+                                <div class="media-switch__panes">
+                                    <div class="media-switch__pane is-active"><TopazDiagram/></div>
+                                    <div class="media-switch__pane" aria-hidden="true">
+                                        <figure class="stack-card__media">
+                                            <Image src={project.cardImage} alt={project.cardAlt ?? ""} widths={[600, 900, 1200]}
+                                                   sizes="(max-width: 1024px) 100vw, 560px"/>
+                                        </figure>
+                                    </div>
+                                </div>
+                            </div>
+                        ) : project.diagram === "topaz-delta" ? (
+                            <TopazDiagram/>
+                        ) : project.pipeline ? (
+                            <figure class="stack-card__media pipeline"
+                                    aria-label={`Pipeline: ${project.pipeline.map((step) => step.name).join(", ")}`}>
+                                {project.pipeline.map((step, n) => (
+                                    <>
+                                        {n > 0 && <div class="pipeline__link"></div>}
+                                        <div class:list={["pipeline__node", { "pipeline__node--end": n === project.pipeline!.length - 1 }]}>
+                                            <strong>{step.name}</strong><span>{step.note}</span>
+                                        </div>
+                                    </>
+                                ))}
+                            </figure>
+                        ) : project.cardImage && (
+                            <figure class="stack-card__media">
+                                <Image src={project.cardImage} alt={project.cardAlt ?? ""} widths={[600, 900, 1200]}
+                                       sizes="(max-width: 1024px) 100vw, 560px"/>
+                            </figure>
+                        )}
+                    </div>
+                </article>
+            ))}
+        </div>
+    </div>
+</section>

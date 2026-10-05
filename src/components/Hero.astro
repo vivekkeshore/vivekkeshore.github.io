@@ -1,0 +1,67 @@
+---
+import { profile, stats } from "../data/site";
+
+// Pre-highlighted snippet; site.js types it out character by character.
+const code = [
+    `<span class="tk-k">from</span> pythonista <span class="tk-k">import</span> <span class="tk-f">Engineer</span>`,
+    ``,
+    `vivek = <span class="tk-f">Engineer</span>(`,
+    `    name=<span class="tk-s">"${profile.name}"</span>,`,
+    `    role=<span class="tk-s">"${profile.role}"</span>,`,
+    `    years_of_exp=<span class="tk-n">14</span>,`,
+    `    stack=[<span class="tk-s">"Python"</span>, <span class="tk-s">"Gen AI"</span>, <span class="tk-s">"AWS"</span>],`,
+    `    speaker=<span class="tk-k">True</span>,  <span class="tk-c"># PyCon India · SG · APAC</span>`,
+    `)`,
+    ``,
+    `vivek.<span class="tk-f">build</span>(<span class="tk-s">"Scalable cloud native solutions"</span>)`,
+    `<span class="tk-c"># ✓ shipped to production</span>`,
+].join("\n");
+---
+
+<section class="hero" id="top">
+    <div class="container hero__grid">
+        <div class="hero__copy">
+            <p class="chip reveal"><span class="chip__dot"></span>{profile.role} · Tech Speaker · {profile.location}</p>
+            <h1 class="hero__title reveal" style="--i:1">{profile.name}</h1>
+            <p class="hero__lede reveal" style="--i:2">
+                Building{" "}
+                <span class="rotator" aria-live="polite">
+                    {profile.rotatingWords.map((word, i) => <span class:list={{ "is-active": i === 0 }}>{word}</span>)}
+                </span>
+                <br/>in Python for 14 years.
+            </p>
+            <p class="hero__text reveal" style="--i:3">
+                I design end-to-end cloud native apps, AI Agents, data pipelines and speak about Python at
+                PyCons and tech events across Asia.
+            </p>
+            <div class="cta-pair reveal" style="--i:4">
+                <a class="btn btn--primary" href="#work">View Work</a>
+                <a class="btn btn--glass btn--badge btn--hello" href="#contact">
+                    <span class="btn__badge" aria-hidden="true"><span class="btn__wave">👋</span></span>
+                    Say Hello
+                    <span class="btn__arrow" aria-hidden="true">→</span>
+                </a>
+            </div>
+        </div>
+
+        <figure class="code-window glass tilt reveal" style="--i:2" aria-label="A Python snippet describing Vivek">
+            <div class="code-window__bar">
+                <span></span><span></span><span></span>
+                <em>vivek.py</em>
+            </div>
+            <pre><code data-typewriter set:html={code}/></pre>
+        </figure>
+    </div>
+
+    <div class="container">
+        <dl class="stats glass reveal" style="--i:5">
+            {stats.map((stat) => (
+                <div class="stat">
+                    <dt>{stat.label}</dt>
+                    <dd><span data-count={stat.value}>{stat.value.toLocaleString("en-US")}</span>+</dd>
+                </div>
+            ))}
+        </dl>
+    </div>
+    <a class="scroll-cue" href="#about" aria-label="Scroll to About"><span></span></a>
+</section>
