@@ -1,0 +1,46 @@
+---
+import { profile, socials } from "../data/site";
+
+const linkedin = socials.find((social) => social.label === "LinkedIn")!;
+const linkedinIcon = `<path d="M6.94 8.5H3.56V20h3.38V8.5zM5.25 3a1.96 1.96 0 1 0 0 3.92 1.96 1.96 0 0 0 0-3.92zM20.44 13.4c0-3.1-1.65-4.55-3.86-4.55-1.78 0-2.58.98-3.02 1.67V8.5H10.2c.04.95 0 11.5 0 11.5h3.36v-6.42c0-.34.02-.69.13-.93.27-.69.9-1.4 1.96-1.4 1.38 0 1.94 1.05 1.94 2.6V20h3.36v-6.6z"/>`;
+---
+
+<section class="section" id="contact">
+    <div class="container">
+        <div class="contact glass reveal">
+            <p class="eyebrow">Contact</p>
+            <h2 class="contact__title">Let's build something<br/>worth shipping.</h2>
+            <p class="contact__text">Python, Gen AI, AI Agents, data platforms, mentoring, conducting interviews or interview preparation, or a project you have in mind, my inbox is open.</p>
+            <div class="contact__email">
+                <a href={`mailto:${profile.email}`}>{profile.email}</a>
+                <button class="btn btn--glass btn--sm" type="button" data-copy={profile.email}>Copy</button>
+            </div>
+            <div class="cta-pair">
+                <a class="btn btn--primary" href={`mailto:${profile.email}`}>Email Me</a>
+                <a class="btn btn--glass btn--badge btn--linkedin" href={linkedin.href} target="_blank" rel="noopener">
+                    <span class="btn__badge"><svg viewBox="0 0 24 24" aria-hidden="true" set:html={linkedinIcon}/></span>
+                    Let's connect
+                    <span class="btn__arrow" aria-hidden="true">→</span>
+                </a>
+            </div>
+        </div>
+        <footer class="site-footer">
+            <span>© {new Date().getFullYear()} {profile.name}</span>
+            <nav aria-label="Social">
+                {socials.map((social) => (
+                    <a
+                        class="social"
+                        href={social.href}
+                        target="_blank"
+                        rel="noopener"
+                        aria-label={social.label}
+                        data-label={social.label}
+                        style={`--brand:${social.color};--brand-ink:${social.ink}`}
+                    >
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d={social.icon}/></svg>
+                    </a>
+                ))}
+            </nav>
+        </footer>
+    </div>
+</section>

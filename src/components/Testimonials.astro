@@ -1,0 +1,115 @@
+---
+import { Image } from "astro:assets";
+import SectionHead from "./SectionHead.astro";
+import Drawer from "./Drawer.astro";
+import { testimonials, recommendationsUrl } from "../data/site";
+
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+function label(date: string): string {
+    const [year, month] = date.split("-");
+    return `${MONTHS[Number(month) - 1]} ${year}`;
+}
+
+// Long recommendations get clamped on the slide, with the full text in a side panel.
+const LONG = 600;
+const slides = testimonials.map((t) => ({
+    ...t,
+    when: label(t.date),
+    long: t.text.join(" ").length > LONG,
+    avatarStyle: avatarStyle(t.photoZoom, t.photoFocus),
+}));
+
+// Centre an off-centre face: move the focus point to the middle, then scale around it.
+function avatarStyle(zoom?: number, focus = "50% 50%"): string | undefined {
+    if (!zoom) return undefined;
+    const [fx, fy] = focus.split(" ").map((v) => parseFloat(v) / 100);
+    return `--zoom:${zoom};--tx:${((0.5 - fx) * zoom * 100).toFixed(1)}%;--ty:${((0.5 - fy) * zoom * 100).toFixed(1)}%`;
+}
+
+const quote = `<path d="M10 7H6a3 3 0 0 0-3 3v4h5v-4H5.5A1.5 1.5 0 0 1 7 8.5V7zm11 0h-4a3 3 0 0 0-3 3v4h5v-4h-2.5A1.5 1.5 0 0 1 18 8.5V7z"/>`;
+const linkedin = `<path d="M6.94 8.5H3.56V20h3.38V8.5zM5.25 3a1.96 1.96 0 1 0 0 3.92 1.96 1.96 0 0 0 0-3.92zM20.44 13.4c0-3.1-1.65-4.55-3.86-4.55-1.78 0-2.58.98-3.02 1.67V8.5H10.2c.04.95 0 11.5 0 11.5h3.36v-6.42c0-.34.02-.69.13-.93.27-.69.9-1.4 1.96-1.4 1.38 0 1.94 1.05 1.94 2.6V20h3.36v-6.6z"/>`;
+---
+
+<section class="section section--tight" id="testimonials">
+    <div class="container">
+        <SectionHead eyebrow="Testimonials" title="Kind words from people I’ve worked with."/>
+
+        <div class="tst glass reveal" data-tst>
+            <span class="tst__mark" aria-hidden="true"><svg viewBox="0 0 24 24" set:html={quote}/></span>
+
+            <div class="tst__slides" aria-live="polite">
+                {slides.map((t, i) => (
+                    <figure class:list={["tst__slide", { "is-active": i === 0 }]} id={`tst-${t.id}`}
+                            role="tabpanel" aria-labelledby={`tst-tab-${t.id}`} aria-hidden={i === 0 ? "false" : "true"}>
+                        <blockquote>
+                            <p class="tst__highlight">“{t.highlight}”</p>
+                            <div class:list={["tst__body", { "tst__body--clamped": t.long }]}>
+                                {t.text.map((paragraph) => <p>{paragraph}</p>)}
+                            </div>
+                        </blockquote>
+                        {t.long && (
+                            <button class="tst__more" type="button" data-drawer={`t-${t.id}`}>Read the full recommendation →</button>
+                        )}
+                        <figcaption class="tst__author">
+                            <span class="tst__avatar" style={t.avatarStyle}>
+                                <Image src={t.photo} alt="" width={112}/>
+                            </span>
+                            <span>
+                                <strong>{t.name}</strong>
+                                <span class="tst__title">{t.title}</span>
+                                <span class="tst__meta">{t.relationship} · {t.when}</span>
+                            </span>
+                        </figcaption>
+                    </figure>
+                ))}
+            </div>
+
+            <div class="tst__nav">
+                <div class="tst__tabs" role="tablist" aria-label="Choose a testimonial">
+                    {slides.map((t, i) => (
+                        <button class="tst__tab" type="button" role="tab" id={`tst-tab-${t.id}`}
+                                aria-controls={`tst-${t.id}`} aria-selected={i === 0 ? "true" : "false"}
+                                tabindex={i === 0 ? 0 : -1} aria-label={t.name}>
+                            <span class="tst__avatar" style={t.avatarStyle}>
+                                <Image src={t.photo} alt="" width={112}/>
+                            </span>
+                            <svg class="tst__ring" viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="26"/></svg>
+                        </button>
+                    ))}
+                </div>
+                <div class="tst__arrows">
+                    <button class="tst__arrow" type="button" data-tst-step="-1" aria-label="Previous testimonial">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+                    </button>
+                    <button class="tst__arrow" type="button" data-tst-step="1" aria-label="Next testimonial">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <p class="tst__source reveal">
+            <a href={recommendationsUrl} target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" aria-hidden="true" set:html={linkedin}/>
+                {testimonials.length} recommendations on LinkedIn ↗
+            </a>
+        </p>
+    </div>
+</section>
+
+{slides.filter((t) => t.long).map((t) => (
+    <Drawer id={`t-${t.id}`} labelledby={`t-${t.id}-title`}>
+        <article class="drawer__body">
+            <p class="eyebrow">{t.relationship} · {t.when}</p>
+            <h2 id={`t-${t.id}-title`}>{t.name}</h2>
+            <p class="tst__drawer-title">{t.title}</p>
+            {t.text.map((paragraph) => <p>{paragraph}</p>)}
+            <a class="btn btn--glass btn--badge btn--linkedin" href={recommendationsUrl} target="_blank" rel="noopener">
+                <span class="btn__badge"><svg viewBox="0 0 24 24" aria-hidden="true" set:html={linkedin}/></span>
+                View on LinkedIn
+                <span class="btn__arrow" aria-hidden="true">→</span>
+            </a>
+        </article>
+    </Drawer>
+))}

@@ -1,0 +1,45 @@
+---
+// Topaz Delta architecture: execution flow on the left, AI services on the right.
+const triggers = ["Manual", "Schedule", "GitHub"];
+const machines = ["On-prem", "Cloud", "Physical"];
+const ai = [
+    { name: "AI root-cause analysis", note: "LLM reads logs + code → diagnosis → Grafana" },
+    { name: "Delta MCP", note: "Claude Code, Roo Code run & debug tasks" },
+    { name: "Foundry", note: "Codebase index → apps in natural language" },
+];
+---
+
+<figure class="stack-card__media topaz" aria-label="Topaz Delta architecture: triggers feed the API server and compute service, which run tasks on node agents across on-prem, cloud and physical machines; AI services for root-cause analysis, MCP and codebase search sit alongside.">
+    <div class="topaz__flow">
+        <div class="topaz__chips">
+            {triggers.map((t) => <span>{t}</span>)}
+        </div>
+        <div class="topaz__link"></div>
+        <div class="topaz__node">
+            <strong>API server</strong>
+            <span>Workflows · versioning · permissions · audit</span>
+        </div>
+        <div class="topaz__link"></div>
+        <div class="topaz__node">
+            <strong>Compute service</strong>
+            <span>Task orchestration · MATLAB · Python · SDK runtimes</span>
+        </div>
+        <div class="topaz__link"></div>
+        <div class="topaz__node topaz__node--agents">
+            <strong>Node agents</strong>
+            <div class="topaz__chips topaz__chips--small">
+                {machines.map((m) => <span>{m}</span>)}
+            </div>
+        </div>
+    </div>
+
+    <div class="topaz__ai">
+        <p class="topaz__ai-label">AI layer</p>
+        {ai.map((item, i) => (
+            <div class="topaz__ai-card" style={`--d:${i * 0.8}s`}>
+                <strong>{item.name}</strong>
+                <span>{item.note}</span>
+            </div>
+        ))}
+    </div>
+</figure>

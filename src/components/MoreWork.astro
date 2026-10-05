@@ -1,0 +1,31 @@
+---
+import { Image } from "astro:assets";
+import SectionHead from "./SectionHead.astro";
+import { projects } from "../data/site";
+
+const others = projects.filter((project) => !project.featured);
+---
+
+<section class="section section--tight" id="more-work">
+    <div class="container">
+        <SectionHead eyebrow="More work" title="Across finance, insurance, fleets and hiring."/>
+        <div class="bento">
+            {others.map((project, i) => (
+                <button
+                    class:list={["bento__card glass glass--interactive tilt reveal", { "bento__card--wide": project.wide }]}
+                    style={`--i:${i}`}
+                    type="button"
+                    data-drawer={`p-${project.id}`}
+                >
+                    {project.cardImage && (
+                        <Image src={project.cardImage} alt="" widths={[480, 800]}
+                               sizes="(max-width: 767px) 100vw, 33vw"/>
+                    )}
+                    <span class="bento__label">
+                        <em>{project.eyebrow}</em>{project.title}<small>{project.tagline}</small>
+                    </span>
+                </button>
+            ))}
+        </div>
+    </div>
+</section>

@@ -1,0 +1,81 @@
+---
+import { Image } from "astro:assets";
+import SectionHead from "./SectionHead.astro";
+import { awards } from "../data/site";
+
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+// "Sep 2022" -> 2022.67, "2025" -> 2025.5 (mid-year when no month is given).
+function toYear(date: string): number {
+    const [first, second] = date.split(" ");
+    if (!second) return Number(first) + 0.5;
+    return Number(second) + MONTHS.indexOf(first) / 12;
+}
+
+const all = [...awards.highlights, ...awards.recurring];
+const total = all.reduce((sum, award) => sum + award.dates.length, 0);
+const years = all.flatMap((award) => award.dates.map(toYear));
+const axisStart = Math.floor(Math.min(...years));
+const axisEnd = Math.floor(Math.max(...years)) + 1;
+const span = axisEnd - axisStart;
+const axisYears = Array.from({ length: span }, (_, i) => axisStart + i);
+
+function yearRange(dates: string[]): string {
+    const ys = dates.map((d) => d.split(" ").pop());
+    const first = ys[ys.length - 1];
+    const last = ys[0];
+    return first === last ? dates[0] : `${first} – ${last}`;
+}
+
+const trophy = `<path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5v1.5A3 3 0 0 0 8 10.5M16 6h3v1.5a3 3 0 0 1-3 3M12 13v4M8.5 20h7M10 17h4v3h-4z"/>`;
+---
+
+<section class="section section--tight" id="awards">
+    <div class="container">
+        <SectionHead eyebrow="Recognition" title={`${total} awards, and counting.`}/>
+
+        <div class="awards">
+            {awards.highlights.map((award, i) => (
+                <article class:list={["award glass glass--interactive tilt reveal", { "award--lead": i === 0 }]}
+                         style={`--i:${i}`}>
+                    {award.image ? (
+                        <span class="award__medal">
+                            <Image src={award.image} alt={`${award.title} badge`} width={192}/>
+                        </span>
+                    ) : (
+                        <span class="award__icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" set:html={trophy}/>
+                        </span>
+                    )}
+                    <p class="award__program">{award.program} · {award.dates[0]}</p>
+                    <h3>{award.title}</h3>
+                    <p class="award__issuer">{award.issuer}</p>
+                </article>
+            ))}
+        </div>
+
+        <div class="tallies">
+            {awards.recurring.map((award, i) => (
+                <article class="tally glass glass--interactive reveal" style={`--i:${i}`}>
+                    <p class="tally__count">
+                        <span data-count={award.dates.length}>{award.dates.length}</span><small>×</small>
+                    </p>
+                    <h3>{award.title}</h3>
+                    <p class="tally__meta">{award.issuer} · {yearRange(award.dates)}</p>
+                    <div class="tally__track" role="img"
+                         aria-label={`Received ${award.dates.join(", ")}`}>
+                        {award.dates.map((date) => (
+                            <span class="tally__dot" title={date}
+                                  style={`--at:${((toYear(date) - axisStart) / span * 100).toFixed(2)}%`}></span>
+                        ))}
+                    </div>
+                    <div class="tally__axis" aria-hidden="true">
+                        {axisYears.map((year) => (
+                            <span style={`--at:${((year - axisStart) / span * 100).toFixed(2)}%`}>{year}</span>
+                        ))}
+                    </div>
+                </article>
+            ))}
+        </div>
+    </div>
+</section>

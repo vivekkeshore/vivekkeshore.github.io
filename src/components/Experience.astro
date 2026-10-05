@@ -1,0 +1,83 @@
+---
+import SectionHead from "./SectionHead.astro";
+import { experience } from "../data/site";
+
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const now = new Date();
+const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+
+function label(date?: string): string {
+    if (!date) return "Present";
+    const [year, month] = date.split("-");
+    return `${MONTHS[Number(month) - 1]} ${year}`;
+}
+
+// Inclusive month count, matching how LinkedIn reports tenure.
+function months(start: string, end = today): number {
+    const [sy, sm] = start.split("-").map(Number);
+    const [ey, em] = end.split("-").map(Number);
+    return (ey - sy) * 12 + (em - sm) + 1;
+}
+
+function duration(total: number): string {
+    const y = Math.floor(total / 12);
+    const m = total % 12;
+    return [y && `${y} yr${y > 1 ? "s" : ""}`, m && `${m} mo${m > 1 ? "s" : ""}`].filter(Boolean).join(" ");
+}
+
+const jobs = experience.map((job) => {
+    const first = job.roles[job.roles.length - 1];
+    const last = job.roles[0];
+    return {
+        ...job,
+        when: `${label(first.start)} - ${label(last.end)}`,
+        tenure: duration(months(first.start, last.end)),
+        current: !last.end,
+        roles: job.roles.map((role) => ({
+            ...role,
+            when: `${label(role.start)} - ${label(role.end)}`,
+            tenure: duration(months(role.start, role.end)),
+        })),
+    };
+});
+
+const earliest = experience[experience.length - 1].roles.at(-1)!.start;
+const years = Math.floor(months(earliest) / 12);
+---
+
+<section class="section" id="experience">
+    <div class="container container--narrow">
+        <SectionHead eyebrow="Experience" title={`${years} years, ${jobs.length} companies, growing expertise.`}/>
+        <ol class="timeline">
+            {jobs.map((job) => (
+                <li class:list={["role reveal", { "role--current": job.current }]}>
+                    <div class="role__card glass glass--interactive">
+                        <div class="role__top">
+                            <span class="role__when">{job.when}</span>
+                            <span class="role__tenure">{job.current ? "Current · " : ""}{job.tenure}</span>
+                        </div>
+                        {job.roles.length === 1 ? (
+                            <h3>{job.roles[0].title}</h3>
+                        ) : (
+                            <ol class="promotions" aria-label="Roles, newest first">
+                                {job.roles.map((role) => (
+                                    <li>
+                                        <h3>{role.title}</h3>
+                                        <span>{role.when} · {role.tenure}</span>
+                                    </li>
+                                ))}
+                            </ol>
+                        )}
+                        <p class="role__org">{job.org}{job.location && ` · ${job.location}`}</p>
+                        {job.summary && <p>{job.summary}</p>}
+                        {job.contributions && (
+                            <ul class="role__extras" aria-label="Beyond client work">
+                                {job.contributions.map((item) => <li>{item}</li>)}
+                            </ul>
+                        )}
+                    </div>
+                </li>
+            ))}
+        </ol>
+    </div>
+</section>
