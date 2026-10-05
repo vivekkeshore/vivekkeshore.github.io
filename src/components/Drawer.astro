@@ -1,0 +1,23 @@
+---
+// Glass side panel built on <dialog>; opened by any element with data-drawer="<id>".
+interface Props {
+    id: string;
+    label?: string;
+    labelledby?: string;
+    variant?: "menu";
+}
+
+const { id, label, labelledby, variant } = Astro.props;
+---
+
+<dialog
+    class:list={["drawer", variant && `drawer--${variant}`]}
+    id={id}
+    aria-label={label}
+    aria-labelledby={labelledby}
+>
+    <button class="drawer__close" type="button" data-close aria-label="Close">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <slot/>
+</dialog>

@@ -1,0 +1,143 @@
+---
+import { Image } from "astro:assets";
+import SectionHead from "./SectionHead.astro";
+import { talks, type TalkCategory } from "../data/site";
+
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+function label(date: string): string {
+    const [year, month] = date.split("-");
+    return `${MONTHS[Number(month) - 1]} ${year}`;
+}
+
+const filters: { key: string; label: string; match: (t: (typeof talks)[number]) => boolean }[] = [
+    { key: "all", label: "All", match: () => true },
+    { key: "conference", label: "Conferences", match: (t) => t.category === "conference" },
+    { key: "workshop", label: "Workshops", match: (t) => t.kind === "workshop" },
+    { key: "meetup", label: "Meetups", match: (t) => t.category === "meetup" },
+    { key: "corporate", label: "Corporate", match: (t) => t.category === "corporate" },
+];
+
+const categoryLabel: Record<TalkCategory, string> = {
+    conference: "Conference",
+    meetup: "Meetup",
+    corporate: "Corporate",
+};
+
+const conferenceCount = talks.filter((t) => t.category === "conference").length;
+const workshopCount = talks.filter((t) => t.kind === "workshop").length;
+const internationalEvents = new Set(talks.filter((t) => t.international).map((t) => t.event)).size;
+const firstYear = talks[talks.length - 1].date.slice(0, 4);
+
+const summary = [
+    { value: talks.length, label: "Sessions delivered" },
+    { value: conferenceCount, label: "At PyCons & conferences" },
+    { value: workshopCount, label: "Hands-on workshops" },
+    { value: internationalEvents, label: "International stages" },
+];
+
+// Recurring themes across the talks above, shown on the invite banner.
+const ctaTopics = ["Python internals", "FastAPI", "API testing", "Concurrency", "Agentic AI", "Hands-on workshops"];
+
+const years = [...new Set(talks.map((t) => t.date.slice(0, 4)))];
+const byYear = years.map((year) => ({ year, items: talks.filter((t) => t.date.startsWith(year)) }));
+
+const external = `<path d="M7 17L17 7M9 7h8v8"/>`;
+const mic = `<path d="M12 3v12M8 7v4a4 4 0 0 0 8 0V7M12 15v6M8 21h8"/>`;
+---
+
+<section class="section" id="talks">
+    <div class="container">
+        <SectionHead eyebrow="Speaking" title="On stage at PyCons across Asia."/>
+
+        <dl class="talk-stats glass reveal">
+            {summary.map((item) => (
+                <div class="stat">
+                    <dt>{item.label}</dt>
+                    <dd><span data-count={item.value}>{item.value}</span></dd>
+                </div>
+            ))}
+        </dl>
+
+        <div class="chip-filters reveal" role="group" aria-label="Filter talks" data-talk-filters>
+            <span class="chip-filters__indicator" aria-hidden="true"></span>
+            {filters.map((filter, i) => (
+                <button type="button" data-filter={filter.key} aria-pressed={i === 0 ? "true" : "false"}>
+                    {filter.label}<small>{talks.filter(filter.match).length}</small>
+                </button>
+            ))}
+        </div>
+
+        <div class="talk-years">
+            {byYear.map((group) => (
+                <section class="talk-year" aria-label={`Talks in ${group.year}`}>
+                    <h3 class="talk-year__label reveal">{group.year}</h3>
+                    <div class="talk-grid">
+                        {group.items.map((talk, i) => {
+                            const tags = filters.filter((f) => f.key !== "all" && f.match(talk)).map((f) => f.key);
+                            const Tag = talk.href ? "a" : "article";
+                            const linkProps = talk.href ? { href: talk.href, target: "_blank", rel: "noopener" } : {};
+                            return (
+                                <Tag class:list={["talk glass glass--interactive reveal", { "talk--workshop": talk.kind === "workshop" }]}
+                                     style={`--i:${i}`} data-tags={tags.join(" ")} {...linkProps}>
+                                    <div class="talk__head">
+                                        {talk.logo ? (
+                                            <span class:list={["talk__logo", { "talk__logo--cover": talk.logoFit === "cover", "talk__logo--wide": talk.logoWide }]}>
+                                                <Image src={talk.logo} alt={`${talk.event} logo`} width={talk.logoWide ? 240 : 128}/>
+                                            </span>
+                                        ) : (
+                                            <span class="talk__logo talk__logo--icon" aria-hidden="true">
+                                                <svg viewBox="0 0 24 24" set:html={mic}/>
+                                            </span>
+                                        )}
+                                        <div>
+                                            <p class="talk__event">{talk.event}</p>
+                                            <p class="talk__date">{label(talk.date)}</p>
+                                        </div>
+                                    </div>
+                                    <div class="talk__meta">
+                                        <span class="talk__kind">{talk.kind === "workshop" ? "Workshop" : "Talk"}</span>
+                                        <span>{categoryLabel[talk.category]}</span>
+                                        {talk.international && <span class="talk__intl">International</span>}
+                                    </div>
+                                    <h4>{talk.title}</h4>
+                                    {talk.href && (
+                                        <span class="talk__go">
+                                            View session
+                                            <svg viewBox="0 0 24 24" aria-hidden="true" set:html={external}/>
+                                        </span>
+                                    )}
+                                </Tag>
+                            );
+                        })}
+                    </div>
+                </section>
+            ))}
+        </div>
+        <p class="talk-empty" hidden>No sessions in this category yet.</p>
+        <div class="talk-cta glass glass--interactive reveal">
+            <div class="talk-cta__mic" aria-hidden="true">
+                <span class="talk-cta__ring"></span>
+                <span class="talk-cta__ring"></span>
+                <svg viewBox="0 0 24 24" set:html={mic}/>
+            </div>
+            <div class="talk-cta__body">
+                <p class="talk-cta__meta">
+                    <span class="talk-cta__live"></span>
+                    Speaking since {firstYear} · {talks.length} sessions · {internationalEvents} international stages
+                </p>
+                <h3 class="talk-cta__title">Organising an event? <span>Let's put Python on stage.</span></h3>
+                <ul class="talk-cta__topics">
+                    {ctaTopics.map((topic) => <li>{topic}</li>)}
+                </ul>
+            </div>
+            <a class="btn btn--primary btn--badge btn--invite" href="#contact">
+                <span class="btn__badge" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" set:html={mic}/>
+                </span>
+                Invite me to speak
+                <span class="btn__arrow" aria-hidden="true">→</span>
+            </a>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,39 @@
+---
+import { Image } from "astro:assets";
+import profilePhoto from "../assets/profile.jpg";
+import { facts } from "../data/site";
+---
+
+<section class="section" id="about">
+    <div class="container about">
+        <figure class="about__photo glass tilt reveal">
+            <Image src={profilePhoto} alt="Vivek Keshore holding a camera" widths={[360, 540]}
+                   sizes="(max-width: 767px) 100vw, 440px"/>
+        </figure>
+        <div class="about__body">
+            <p class="eyebrow reveal">About</p>
+            <h2 class="section-title reveal" style="--i:1">
+                Turning ideas into dependable Python based applications & cloud native systems.
+            </h2>
+            <p class="reveal" style="--i:2">
+                I'm a Software Architect (Python & Open Source) at EPAM Systems. Since 2012 I've worked across the Python ecosystem, and in last few years mostly with
+                FastAPI, Gen AI, databases (sql, nosql, vector), Celery, Airflow, Great Expectations and AWS services.
+            </p>
+            <p class="reveal" style="--i:3">
+                My sweet spot is end-to-end backend development, efficient data pipelines and cloud-native
+                architecture. I care about clean object-oriented design, data structures and algorithms. I've
+                contributed to open source and PyPI libraries.
+            </p>
+            <p class="reveal" style="--i:4">
+                I'm also a tech speaker. I have given multiple talks and hands-on workshops at PyCon India, PyConf Hyderabad and local meetups.
+            </p>
+            <div class="facts">
+                {facts.map((fact, i) => (
+                    <div class="fact glass glass--interactive reveal" style={`--i:${i + 5}`}>
+                        <span>{fact.label}</span><strong>{fact.value}</strong>
+                    </div>
+                ))}
+            </div>
+        </div>
+    </div>
+</section>

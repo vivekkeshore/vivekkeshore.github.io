@@ -1,0 +1,23 @@
+---
+import { profile } from "../data/site";
+
+interface Props {
+    links: { href: string; label: string }[];
+}
+
+const { links } = Astro.props;
+---
+
+<header class="nav" id="nav">
+    <div class="nav__bar glass">
+        <a class="wordmark" href="#top" aria-label={`${profile.name} - back to top`}>{profile.name}</a>
+        <nav class="nav__links" aria-label="Primary">
+            <span class="nav__indicator" aria-hidden="true"></span>
+            {links.map((link) => <a href={link.href}>{link.label}</a>)}
+        </nav>
+        <a class="btn btn--primary btn--sm nav__cta" href="#contact">Contact</a>
+        <button class="nav__menu" type="button" data-drawer="menu" aria-label="Open menu">
+            <span></span><span></span>
+        </button>
+    </div>
+</header>
