@@ -1,13 +1,17 @@
 ---
 interface Props {
     eyebrow: string;
+    /** Use "\n" to force a line break; each line then sets its own width. */
     title: string;
 }
 
 const { eyebrow, title } = Astro.props;
+const lines = title.split("\n");
 ---
 
 <header class="section-head">
     <p class="eyebrow reveal">{eyebrow}</p>
-    <h2 class="section-title reveal" style="--i:1">{title}</h2>
+    <h2 class:list={["section-title reveal", { "section-title--lines": lines.length > 1 }]} style="--i:1">
+        {lines.length > 1 ? lines.map((line) => <span>{line}</span>) : title}
+    </h2>
 </header>

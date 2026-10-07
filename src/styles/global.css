@@ -295,6 +295,14 @@ sup {
     max-width: 18ch;
 }
 
+.section-title--lines {
+    max-width: none;
+}
+
+.section-title--lines span {
+    display: block;
+}
+
 .section-head {
     margin-bottom: 56px;
 }
@@ -2769,15 +2777,10 @@ a.tile:hover {
     border-radius: 32px;
     text-align: center;
     overflow: hidden;
-}
-
-.contact::before {
-    content: "";
-    position: absolute;
-    inset: -40% -10% auto;
-    height: 80%;
-    background: radial-gradient(ellipse at center, rgba(62, 106, 225, 0.35), transparent 65%);
-    pointer-events: none;
+    /* Blue glow from the top edge; kept in the background so ::before/::after stay free for the spotlight. */
+    background:
+        radial-gradient(ellipse 60% 45% at 50% 0%, rgba(62, 106, 225, 0.35), transparent 70%),
+        var(--glass-bg);
 }
 
 .contact > * {
