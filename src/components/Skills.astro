@@ -5,7 +5,7 @@ import { marqueeRows, skillGroups } from "../data/site";
 
 <section class="section" id="skills">
     <div class="container">
-        <SectionHead eyebrow="Skills" title="Python at the core. Cloud at scale. AI where it matters."/>
+        <SectionHead eyebrow="Skills" title={"Python at the core. Cloud at scale.\nAI where it matters."}/>
     </div>
     {marqueeRows.map((row, i) => (
         <div class:list={["marquee reveal", { "marquee--reverse": i % 2 === 1 }]} aria-hidden="true">

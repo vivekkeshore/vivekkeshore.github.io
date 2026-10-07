@@ -57,6 +57,8 @@ export interface Talk {
     kind: "talk" | "workshop";
     category: TalkCategory;
     international?: boolean;
+    /** City and country, shown next to the date. */
+    location?: string;
     href?: string;
     /** Event logo, shown on a white tile. */
     logo?: ImageMetadata;
@@ -74,6 +76,7 @@ export const talks: Talk[] = [
         title: "Agentic AI Architecture Patterns",
         kind: "talk",
         category: "corporate",
+        location: "Hyderabad, India",
         href: "https://lnkd.in/p/dXnxjyJp",
         logo: logoTechScape2026,
         logoFit: "cover",
@@ -85,6 +88,7 @@ export const talks: Talk[] = [
         title: "How to Write Terrible Python Code (And Why It Works… Until It Doesn't)",
         kind: "talk",
         category: "conference",
+        location: "Singapore",
         international: true,
         href: "https://pycon.sg/speakers",
         logo: logoPyConSG2026,
@@ -96,6 +100,7 @@ export const talks: Talk[] = [
         kind: "talk",
         category: "conference",
         international: true,
+        location: "Manila, Philippines",
         href: "https://pretalx.com/python-asia-2026/talk/DADSMZ/",
         logo: logoPythonAsia2026,
     },
@@ -105,6 +110,7 @@ export const talks: Talk[] = [
         title: "Python Concurrency Chaos: Async, Threads, GIL-free, and Beyond",
         kind: "talk",
         category: "conference",
+        location: "Hyderabad, India",
         href: "https://2026.pyconfhyd.org/speakers/vivek-keshore",
         logo: logoPyConfHyd2026,
         logoFit: "cover",
@@ -115,6 +121,7 @@ export const talks: Talk[] = [
         title: "FastAPI for Production: Patterns and Architecture in Practice",
         kind: "workshop",
         category: "conference",
+        location: "Bangalore, India",
         href: "https://cfp.in.pycon.org/2025/talk/LHLX8U/",
         logo: logoPyConIndia2025,
         logoFit: "cover",
@@ -125,6 +132,7 @@ export const talks: Talk[] = [
         title: "Surprises, Pitfalls, and Patterns: Learnings from Interviewing 400+ Developers",
         kind: "talk",
         category: "conference",
+        location: "Bangalore, India",
         href: "https://cfp.in.pycon.org/2025/talk/L8AUWL/",
         logo: logoPyConIndia2025,
         logoFit: "cover",
@@ -135,6 +143,7 @@ export const talks: Talk[] = [
         title: "Boosting API Reliability: Property-Based Testing in Action",
         kind: "talk",
         category: "conference",
+        location: "Singapore",
         international: true,
         href: "https://pythonsingapore.github.io/pyconsg-2025/schedule.html",
         logo: logoPyConSG2025,
@@ -145,6 +154,7 @@ export const talks: Talk[] = [
         title: "Under the Hood: Python Data Types",
         kind: "talk",
         category: "meetup",
+        location: "Hyderabad, India",
         href: "https://www.meetup.com/hydpygroup/events/308039337/",
         logo: logoHydPy,
         logoFit: "cover",
@@ -155,6 +165,7 @@ export const talks: Talk[] = [
         title: "Web API Security Practices",
         kind: "talk",
         category: "corporate",
+        location: "Hyderabad, India",
     },
     {
         event: "Softobiz Tech Quarter",
@@ -162,6 +173,7 @@ export const talks: Talk[] = [
         title: "Advanced Prompt Engineering",
         kind: "talk",
         category: "corporate",
+        location: "Hyderabad, India",
     },
     {
         event: "PyConf Hyderabad",
@@ -169,6 +181,7 @@ export const talks: Talk[] = [
         title: "From Raw to Reliable: Automated Data Validation with Great Expectations",
         kind: "talk",
         category: "conference",
+        location: "Hyderabad, India",
         href: "https://2025.pyconfhyd.org/speakers/vivek-keshore",
         logo: logoPyConfHyd2025,
     },
@@ -178,6 +191,7 @@ export const talks: Talk[] = [
         title: "API Testing with Schemathesis and Hypothesis",
         kind: "talk",
         category: "meetup",
+        location: "Hyderabad, India",
         href: "https://www.meetup.com/hydpygroup/events/305325392/",
         logo: logoHydPy,
         logoFit: "cover",
@@ -188,6 +202,7 @@ export const talks: Talk[] = [
         title: "From Zero to Backend Hero: Creating Full-Featured Apps with FastAPI",
         kind: "workshop",
         category: "conference",
+        location: "Bangalore, India",
         href: "https://in.pycon.org/cfp/2024/proposals/from-zero-to-backend-hero-creating-full-featured-apps-with-fastapi~aADQz/",
         logo: logoPyConIndia2024,
     },
@@ -197,6 +212,7 @@ export const talks: Talk[] = [
         title: "From Novice to Virtuoso: Mastering Object-Oriented Python in 3 Hours",
         kind: "workshop",
         category: "conference",
+        location: "Hyderabad, India",
         href: "https://in.pycon.org/cfp/pycon-india-2023/proposals/from-novice-to-virtuoso-mastering-object-oriented-python-in-3-hours~dL9gX/",
         logo: logoPyConIndia2023,
     },

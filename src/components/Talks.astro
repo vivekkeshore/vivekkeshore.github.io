@@ -92,7 +92,7 @@ const mic = `<path d="M12 3v12M8 7v4a4 4 0 0 0 8 0V7M12 15v6M8 21h8"/>`;
                                         )}
                                         <div>
                                             <p class="talk__event">{talk.event}</p>
-                                            <p class="talk__date">{label(talk.date)}</p>
+                                            <p class="talk__date">{label(talk.date)}{talk.location && ` · ${talk.location}`}</p>
                                         </div>
                                     </div>
                                     <div class="talk__meta">
