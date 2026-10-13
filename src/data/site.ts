@@ -28,6 +28,7 @@ import photoTodd from "../assets/testimonial_author/todd_young.jpeg";
 import photoMichael from "../assets/testimonial_author/michael_hearn.jpeg";
 import photoVenkata from "../assets/testimonial_author/venkat_reddy.jpeg";
 import photoVasanthi from "../assets/testimonial_author/vasanthi_annamalai.png";
+import photoKawika from "../assets/testimonial_author/kawika_tarayao.jpeg";
 
 export const profile = {
     name: "Vivek Keshore",
@@ -615,6 +616,20 @@ export const recommendationsUrl = "https://www.linkedin.com/in/vivek-keshore/det
 
 // LinkedIn recommendations, newest first. Quotes are verbatim.
 export const testimonials: Testimonial[] = [
+    {
+        id: "kawika-tarayao",
+        name: "Kawika Tarayao, CFA",
+        title: "Managing Director, Vice President, Software Engineering at Green Street",
+        relationship: "Client",
+        date: "2026-10-12",
+        photo: photoKawika,
+        highlight: "Vivek combines deep technical expertise with a genuine team-first mindset.",
+        text: [
+            "Vivek was a key technical leader on my team at Green Street for four years, and he consistently impressed me with his technical expertise, problem-solving abilities, and collaborative approach. As the lead Python developer for one of my squads, he led the development of our first client-facing API, building it from the ground up and iterating through multiple versions to deliver a solution that evolved with our business needs.",
+            "Beyond the API, Vivek contributed to numerous important initiatives, including redefining how we designed and implemented large-scale data ETL pipelines. He brought strong technical acumen and thoughtful insights to every project, always willing to dive into complex problems and help the team find the right solution. His excellent communication, responsiveness, and willingness to collaborate made him someone I could always count on.",
+            "Vivek combines deep technical expertise with a genuine team-first mindset. He was consistently available, dependable, and a true pleasure to work with. I would enthusiastically recommend him to any organization looking for a talented engineer who can take ownership of complex technical challenges and deliver meaningful results.",
+        ],
+    },
     {
         id: "jerry-thomas",
         name: "Jerry Thomas",
