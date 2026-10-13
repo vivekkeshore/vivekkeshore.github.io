@@ -10,7 +10,6 @@ export interface GalleryItem {
 export const gallery: GalleryItem[] = [
     { file: "RDS_3444.JPG", event: "EPAM TechScape 2026", caption: "Speaking on agentic AI architecture patterns" },
     { file: "20250913_162250.jpg", event: "PyCon India 2025", caption: "Surprises, Pitfalls and Patterns — on the main stage" },
-    { file: "1775121751378.jpeg", event: "Python Asia 2026", caption: "Hacking Python data types for fun and power" },
     { file: "54849315877_c3eef20b30_o.jpg", event: "PyCon India 2025", caption: "A packed hall" },
     { file: "IMG20260619144735.jpg", event: "PyCon Singapore 2026", caption: "How to write terrible Python code" },
     { file: "20260315_141606.jpeg", event: "PyConf Hyderabad 2026", caption: "Python concurrency chaos: sync vs async" },
@@ -24,7 +23,6 @@ export const gallery: GalleryItem[] = [
     { file: "RDS_3447.JPG", event: "EPAM TechScape 2026", caption: "Six agentic AI design patterns, and when to pick each" },
     { file: "IMG20260619144720.jpg", event: "PyCon Singapore 2026", caption: "On stage in Singapore" },
     { file: "20260315_141528.jpeg", event: "PyConf Hyderabad 2026", caption: "How asyncio works" },
-    { file: "1775121751696.jpeg", event: "Python Asia 2026", caption: "The Python Asia main hall" },
     { file: "20250913_162652.jpg", event: "PyCon India 2025", caption: "Story time" },
     { file: "54850488225_61f0a044c5_o.jpg", event: "PyCon India 2025", caption: "Lessons from interviewing 400+ developers" },
     { file: "54850486980_e1071d11e6_o.jpg", event: "PyCon India 2025", caption: "Main stage, Bengaluru" },
